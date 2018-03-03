@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>陕西省水保宝鸡峡</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/show.css">
+    @*<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>*@
+    <script src="~/Scripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        ; (function (win, lib) {
+            var doc = win.document;
+            var docEl = doc.documentElement;
+            var metaEl = doc.querySelector('meta[name="viewport"]');
+            var flexibleEl = doc.querySelector('meta[name="flexible"]');
+            var dpr = 0;
+            var scale = 0;
+            var tid;
+            var flexible = lib.flexible || (lib.flexible = {});
+
+            if (metaEl) {
+                console.warn('将根据已有的meta标签来设置缩放比例');
+                var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+                if (match) {
+                    scale = parseFloat(match[1]);
+                    dpr = parseInt(1 / scale);
+                }
+            } else if (flexibleEl) {
+                var content = flexibleEl.getAttribute('content');
+                if (content) {
+                    var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+                    var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+                    if (initialDpr) {
+                        dpr = parseFloat(initialDpr[1]);
+                        scale = parseFloat((1 / dpr).toFixed(2));
+                    }
+                    if (maximumDpr) {
+                        dpr = parseFloat(maximumDpr[1]);
+                        scale = parseFloat((1 / dpr).toFixed(2));
+                    }
+                }
+            }
+
+            if (!dpr && !scale) {
+                var isAndroid = win.navigator.appVersion.match(/android/gi);
+                var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+                var devicePixelRatio = win.devicePixelRatio;
+                if (isIPhone) {
+                    // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+                    if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+                        dpr = 3;
+                    } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+                        dpr = 2;
+                    } else {
+                        dpr = 1;
+                    }
+                } else {
+                    // 其他设备下，仍旧使用1倍的方案
+                    dpr = 1;
+                }
+                scale = 1 / dpr;
+            }
+
+            docEl.setAttribute('data-dpr', dpr);
+            if (!metaEl) {
+                metaEl = doc.createElement('meta');
+                metaEl.setAttribute('name', 'viewport');
+                metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+                if (docEl.firstElementChild) {
+                    docEl.firstElementChild.appendChild(metaEl);
+                } else {
+                    var wrap = doc.createElement('div');
+                    wrap.appendChild(metaEl);
+                    doc.write(wrap.innerHTML);
+                }
+            }
+
+            function refreshRem() {
+                var width = docEl.getBoundingClientRect().width;
+                if (width / dpr > 540) {
+                }
+                var rem = width / 10;
+                docEl.style.fontSize = rem + 'px';
+                flexible.rem = win.rem = rem;
+            }
+
+            win.addEventListener('resize', function () {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 300);
+            }, false);
+            win.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    clearTimeout(tid);
+                    tid = setTimeout(refreshRem, 300);
+                }
+            }, false);
+
+            if (doc.readyState === 'complete') {
+                doc.body.style.fontSize = 12 * dpr + 'px';
+            } else {
+                doc.addEventListener('DOMContentLoaded', function (e) {
+                    doc.body.style.fontSize = 12 * dpr + 'px';
+                }, false);
+            }
+
+
+            refreshRem();
+
+            flexible.dpr = win.dpr = dpr;
+            flexible.refreshRem = refreshRem;
+            flexible.rem2px = function (d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === 'string' && d.match(/rem$/)) {
+                    val += 'px';
+                }
+                return val;
+            }
+            flexible.px2rem = function (d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === 'string' && d.match(/px$/)) {
+                    val += 'rem';
+                }
+                return val;
+            }
+
+        })(window, window['lib'] || (window['lib'] = {}));</script>
+    <script>
+        $(function () {
+             $.ajax({
+                url: '@Url.Action("ShowDatas", "WaterRegime")' ,
+                  type: 'GET',
+                  success: function (result) {
+                      if (result.Success) {
+                          $("#hot").empty();
+                          viewDatas(result.Message);
+                          
+                      }
+                  }
+              });
+        });
+        //日期格式化
+        function myformatter(date) {
+            var temp = date.split(' ');
+            return temp[0].replace(new RegExp("/", "g"), "-");
+        }
+        function viewDatas(all_datas) {
+            var datas = all_datas.split('|');
+            //日期
+            $("#labDate").text(myformatter(datas[8])); 
+            //干渠输水情况总量
+            $("#spTop1").text(datas[7].split(':')[1]);
+            //备注
+            $("#spRemark").text(datas[6]);
+            //含沙量
+            var arr5 = datas[5].split(',');
+            $("#sand1").html(arr5[0].split(':')[1]);
+            $("#sand2").html(arr5[1].split(':')[1]);
+            //干渠退水
+            var arr4 = datas[4].split(',');
+            var str = "", sum = 0;
+            for (var i = 0; i < arr4.length; i++) {
+                str += "<tr><td>" + arr4[i].split(':')[0] + "</td><td>" + arr4[i].split(':')[1] + "</td></tr>";
+                sum += Number(arr4[i].split(':')[1]);
+            }
+            for (var i = 0; i < 7 - arr4.length; i++) {
+                str += "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
+            }
+            $(".table3 tbody").html(str);
+            if (sum.toString().indexOf('.') == -1) {
+                sum += ".00";
+            }
+            $("#spTop3").text(sum);
+
+            //灌区用水情况
+            var arr3 = datas[3].split(',');
+            //var strh0 = "<tr>", strh1 = "<tr>", strh2 = "<tr>", strh3 = "<tr>", strh4 = "<tr>", strh5 = "<tr>", strh6 = "<tr>", strh7 = "<tr>", strh8 = "<tr>";
+            var value_arr = [];
+            var strh_arr = ["strh0", "strh1", "strh2", "strh3", "strh4", "strh5", "strh6", "strh7", "strh8"];
+            var obj = {};
+            for (var i = 0; i < 9; i++) {
+                obj[strh_arr[i]] = "<tr>";
+            }
+            
+            var k = 1;
+            for (var i = 0; i < arr3.length - 1; i++) {
+                //debugger;
+                if (arr3[i].indexOf("总站") > -1) {                   
+                    obj.strh0 += "<td  rowspan='5'>" + arr3[i].split(':')[0] + "</td><td>站 名</td><td>引水流量</td>";
+                    //strh5 = strh5.replace("tmp", arr3[i].split(':')[1]);
+                    value_arr.push(arr3[i].split(':')[1]);
+                    if (k<9) {
+                        for (k; k < 9; k++) {
+                            if(k == 5) {
+                                obj[strh_arr[k]] += "<td rowspan='4' style='background-color:#e6f7ea'>tmp</td>"
+                            }
+                            obj[strh_arr[k]] += "<td>&nbsp;</td><td>&nbsp;</td>";
+                        }
+                    }
+                    k = 1;
+                }
+                else {
+                    if (k==5) {
+                        obj[strh_arr[k]] +="<td rowspan='4' style='background-color:#e6f7ea'>tmp</td>"
+                    }
+                    obj[strh_arr[k]] += "<td>" + arr3[i].split(':')[0] + "</td><td>" + arr3[i].split(':')[1] + "</td>";
+                    k++;
+                }               
+            }
+            
+            var strh = obj.strh0 + "</tr>" + obj.strh1 + "</tr>" + obj.strh2 + "</tr>" + obj.strh3 + "</tr>" + obj.strh4 + "</tr>" + obj.strh5 + "</tr>" + obj.strh6 + "</tr>"
+                + obj.strh7 + "</tr>" + obj.strh8 + "</tr>";
+            value_arr.forEach(function (value) {
+                strh = strh.replace("tmp",value);
+            });
+            $(".table4 tbody").html(strh);
+            $("#spTop2").text(arr3[arr3.length - 1].split(':')[1] == "" ? "0.00" : arr3[arr3.length - 1].split(':')[1]);
+            //水库水情
+            var arr2 = datas[2].split(','); 
+            str = ""; sum = 0;
+            for (var i = 0; i < arr2.length; i++) {
+                var arr2_tmp = arr2[i].split(':');
+                str += "<tr><td>" + arr2_tmp[0] + "</td><td>" + arr2_tmp[1] + "</td><td>" + arr2_tmp[2] + "</td><td>" 
+                    + arr2_tmp[3] + "</td><td>" + arr2_tmp[4] + "</td><td>" + arr2_tmp[5] + "</td></tr>";
+                sum += Number(arr2_tmp[2]);               
+            }
+            if (sum.toString().indexOf('.') == -1) {
+                sum += ".00";
+            }
+            $(".table2 tbody").html(str);
+            $("#spTop4").text(sum);
+            //干渠输水情况
+            var arr1 = datas[1].split(',');
+            var arr0 = datas[0].split(',');
+            var str = "<tr><td>交接断面</td>", str1 = "<tr><td>过水流量</td>";
+            for (var i = 0; i < arr0.length; i++) {
+                if (i == arr0.length - 1) {
+                    $("#yuan2").html(arr0[i].split(':')[1]);
+                }
+                else {
+                    str += "<td>" + arr0[i].split(':')[0] + "</td>";
+                    str1 += "<td>" + arr0[i].split(':')[1] + "</td>";
+                }
+            }
+            for (var i = 0; i < arr1.length; i++) {
+                if (i == arr1.length - 1) {
+                    $("#yuan1").html(arr1[i].split(':')[1]);
+                } else {
+                    str += "<td>" + arr1[i].split(':')[0] + "</td>";
+                    str1 += "<td>" + arr1[i].split(':')[1] + "</td>";
+                }
+            }
+            str += "</tr>";
+            str1 += "</tr>";
+            $(".table1 tbody").append(str).append(str1);
+        }
+        
+    </script>
+</head>
+<body>
+    <div class="waterTable">
+        <header>
+            <h1>宝鸡峡灌区信息化平台—8时水情报告单</h1>
+            <p><label id="labDate"></label></p>
+
+        </header>
+        <div class="category">
+            <ul class="container-fluid">
+                <li class="col-lg-3 col-md-3 col-xs-6 col-ms-6">
+                    <div>
+                        <p>干渠输水情况总量</p>
+                        <span id="spTop1">0</span>
+                    </div>
+                </li>
+                <li class="col-lg-3 col-md-3 col-xs-6 col-ms-6 ">
+                    <div>
+                        <p>灌区引水流量总计</p>
+                        <span id="spTop2">0</span>
+                    </div>
+                </li>
+                <li class="col-lg-3 col-md-3 col-xs-6 col-ms-6">
+                    <div>
+                        <p>干渠退水流量总计</p>
+                        <span id="spTop3">0</span>
+                    </div>
+                </li>
+                <li class="col-lg-3 col-md-3 col-xs-6 col-ms-6">
+                    <div>
+                        <p>水库蓄水量总计</p>
+                        <span id="spTop4">0</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content container-fluid">
+            <div class="col-lg-6 t1">
+                <h1>干渠输水情况</h1>
+                <table class="table1" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td>灌区</td>
+                            <td colspan='8'>塬上</td>
+                            <td colspan='7'>塬下</td>
+                        </tr>
+                        <tr>
+                            <td>合计</td>
+                            <td colspan='8' id="yuan1"></td>
+                            <td colspan='7' id="yuan2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-6 t2">
+                <h1>水库水情情况</h1>
+                <table class="table2">
+                    <thead>
+                        <tr>
+                            <td>库名</td>
+                            <td>水位</td>
+                            <td>蓄水量</td>
+                            <td>兴利调度</td>
+                            <td>防汛泄洪</td>
+                            <td>正常水位</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan='2'>塬上含沙量%</td>
+                            <td id="sand1"></td>
+                            <td colspan='2'>塬下含沙量%</td>
+                            <td id="sand2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="t3 col-lg-3">
+                <h1>干渠退水情况</h1>
+                <table class="table3" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <td>闸名</td>
+                            <td>流量</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="t4 col-lg-9">
+                <h1>灌区用水情况</h1>
+                <table class="table4">
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:10px;" class="t4 col-lg-9">
+                <span class="remark" >备注:</span><span id="spRemark"></span>
+            </div>
+           
+        </div>
+        
+    </div>
+</body>
+</html>

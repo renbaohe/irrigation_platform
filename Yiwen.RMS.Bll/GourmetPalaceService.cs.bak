@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Yiwen.RMS.Data;
+
+
+namespace Yiwen.RMS.Bll
+{
+    public class GourmetPalaceService : System.Data.Entity.EFLogic<gourmet_palaces, YWContext>
+    {
+
+        protected override OrderCondition OnGetDefaultOrderItems()
+        {
+            return new System.Data.OrderCondition()
+            {
+                new OrderItem(){ FieldName="created_at", OrderType= OrderType.DESC}
+            };
+        }
+
+        protected override object[] OnGetEntityKey(gourmet_palaces entity)
+        {
+            return new object[] { entity.id };
+        }
+
+        protected override ResultInfo OnBeforeAddEntity(YWContext context, gourmet_palaces entity)
+        {
+            entity.created_at = DateTime.Now;
+            entity.serial_num = 0;
+          
+            return base.OnBeforeAddEntity(context, entity);
+        }
+
+        protected override ResultInfo OnBeforeUpdateEntity(YWContext context, gourmet_palaces entity)
+        {
+            entity.updated_at = DateTime.Now;
+            return base.OnBeforeUpdateEntity(context, entity);
+        }
+
+        public List<GourmetPalaceInfo> TransPageList(List<gourmet_palaces> list)
+        {
+            List<GourmetPalaceInfo> infoList = new List<GourmetPalaceInfo>();
+            using (var context = this.OnCreateContext())
+            {
+                var userids = list.Where(r => r.user_id.HasValue).Select(r => r.user_id).Distinct().ToList();
+
+                var userList = context.users.Where(r => userids.Contains((int)r.id)).ToList();
+                foreach (var item in list)
+                {
+                    GourmetPalaceInfo info = new GourmetPalaceInfo();
+                    info.id = item.id;
+                    info.name = item.name;
+                    info.serial_num = item.serial_num;
+                    info.updated_at = item.updated_at;
+                    info.created_at = item.created_at;
+                    info.user_id = item.user_id;
+                    info.address = item.address;
+                    var user = userList.FirstOrDefault(u => u.id == (int)item.user_id);
+                    info.user_name = user == null ? "" : user.real_name;
+                    infoList.Add(info);
+                }
+            }
+
+            return infoList;
+        }
+        /// <summary>
+        /// 获取列表 符合list条件的列表
+        /// </summary>
+        /// <param name="list">条件  默认=null</param>
+        /// <returns></returns>
+        public List<gourmet_palaces> GetList(List<gourmet_palaces> gplist = null)
+        {
+            using (var context = this.OnCreateContext())
+            {
+                if (gplist == null)
+                    return context.gourmet_palaces.Where(r => r.deleted_at == null).ToList();
+
+                var pgIds = gplist.Select(r => r.id).ToList();
+                var query = context.gourmet_palaces.Where(r => pgIds.Contains(r.id) && r.deleted_at == null).ToList();
+                return query;
+            }
+        }
+
+        public gourmet_palaces GetModel(gourmet_palaces param)
+        {
+            using (var context = this.OnCreateContext())
+            {
+                var query = context.gourmet_palaces.FirstOrDefault(r =>r.user_id==param.user_id );
+                return query;
+            }
+        }
+
+        public bool Delete(long id)
+        {
+            using (var context = this.OnCreateContext())
+            {
+                var model = context.gourmet_palaces.FirstOrDefault(r => r.id == id);
+                model.deleted_at = DateTime.Now;
+                return context.SaveChanges() > 0;
+            }
+        }
+
+		   public List<merchants> GetMerchants(long gourment_palace_Id)
+        {
+            using (var context = this.OnCreateContext())
+            {
+                return context.merchants.Where(p => p.gourmet_palace_id == gourment_palace_Id && p.deleted_at == null).ToList();
+            }
+        }
+    }
+
+    [Serializable]
+    public class GourmetPalaceInfo : gourmet_palaces
+    { /// <summary>
+      /// 管理员名字
+      /// </summary>
+        public string user_name { get; set; }
+    }
+
+}

@@ -1,0 +1,192 @@
+h1, ul, li, p {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    width: 100%;
+    font-size: 100px;
+    height: 100vh;
+}
+
+ul li {
+    list-style: none;
+}
+
+.waterTable {
+    height: 100vh;
+}
+
+    .waterTable header {
+        width: 100%;
+        background: url("../Images/img/reportBanner.jpg") no-repeat;
+        background-size: cover;
+        padding-top: .10416667rem;
+        text-align: center;
+        height: .69791667rem /* 134px */;
+    }
+
+        .waterTable header h1 {
+            font-weight: normal;
+            color: white;
+            font-size: .21875rem /* 42px */;
+            color: #24b8e3;
+        }
+
+        .waterTable header p {
+            margin-top: .10416667rem;
+            font-size: .15625rem;
+            color: #24b8e3;
+        }
+
+    .waterTable .category {
+        background: #283643;
+    }
+
+        .waterTable .category ul {
+            padding: .13541667rem 0 .11458333rem /* 22px */;
+        }
+
+            .waterTable .category ul li {
+                text-align: center;
+            }
+
+                .waterTable .category ul li div {
+                    background-size: 100% auto;
+                    background-repeat: no-repeat;
+                    background-position: bottom;
+                    color: white;
+                    background-image: url("../Images/img/cateforyCloud.png");
+                    font-size: .14583333rem /* 28px */;
+                    padding: .10416667rem .20833333rem /* 40px */;
+                    display: inline-block;
+                }
+
+                    .waterTable .category ul li div span {
+                        font-size: .19791667rem /* 38px */
+                    }
+
+            .waterTable .category ul :first-child div {
+                background-color: #7171c3;
+            }
+
+            .waterTable .category ul :nth-child(2) div {
+                background-color: #23af47;
+            }
+
+            .waterTable .category ul :nth-child(3) div {
+                background-color: #e9cb44;
+            }
+
+            .waterTable .category ul :nth-child(4) div {
+                background-color: #24b8e3;
+            }
+
+    .waterTable .content {
+        padding: .05208333rem /* 10px */ .41666667rem 0
+    }
+
+        .waterTable .content h1 {
+            color: white;
+            font-size: .08333333rem /* 16px */;
+            text-align: center;
+            line-height: .28645833rem /* 55px */;
+        }
+
+        .waterTable .content .t1 h1 {
+            background-color: #7171c3;
+        }
+
+        .waterTable .content .t2 h1 {
+            background-color: #24b8e3;
+        }
+
+        .waterTable .content .t3 {
+            margin-top: .05208333rem /* 10px */;
+        }
+
+            .waterTable .content .t3 h1 {
+                background-color: #e9cb44;
+            }
+
+        .waterTable .content .t4 {
+            margin-top: .05208333rem /* 10px */;
+        }
+
+            .waterTable .content .t4 h1 {
+                background-color: #23af47;
+            }
+
+        .waterTable .content table {
+            vertical-align: top;
+            height: 1.30208333rem /* 250px */;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+            .waterTable .content table tr td {
+                text-align: center;
+                border: 1px solid #ccc;
+                border-collapse: collapse;
+            }
+
+        .waterTable .content .table1 {
+            width: 100%;
+        }
+
+            .waterTable .content .table1 tbody tr:nth-child(2) {
+                background-color: #eee;
+            }
+
+            .waterTable .content .table1 tbody tr:nth-child(1) {
+                background-color: #eee;
+            }
+
+                .waterTable .content .table1 tbody tr:nth-child(1) td, .waterTable .content .table1 tbody tr:nth-child(2) td {
+                    padding: 0;
+                }
+
+            .waterTable .content .table1 tbody tr :first-child {
+                padding: .1rem;
+                background-color: #e7e7f7;
+            }
+
+        .waterTable .content .table3 {
+            width: 100%;
+        }
+
+            .waterTable .content .table3 thead {
+                background-color: #fcf6da;
+            }
+
+        .waterTable .content .table2 {
+            width: 100%;
+        }
+
+            .waterTable .content .table2 thead {
+                background-color: #def5fb;
+            }
+
+                .waterTable .content .table2 thead :first-child {
+                    padding: .05208333rem /* 10px */
+                }
+
+        .waterTable .content .table4 tbody tr:nth-child(1) td {
+            background-color: #eee;
+        }
+
+            .waterTable .content .table4 tbody tr:nth-child(1) td:nth-child(3n+1) {
+                background-color: #e6f7ea;
+            }
+
+        .waterTable .content .table4 tbody tr td {
+            /*padding: 0 .1rem;*/
+        }
+
+    .waterTable .remark {
+        padding: 0 .15625rem
+    }
+
+/*# sourceMappingURL=style.css.map */

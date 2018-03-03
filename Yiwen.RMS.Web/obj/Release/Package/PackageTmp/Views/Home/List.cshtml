@@ -1,0 +1,11 @@
+﻿@model  IEnumerable< Yiwen.RMS.Data.users>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List</h2>
+@foreach (var user in this.Model)
+{ 
+    <div>@user.name</div>
+}

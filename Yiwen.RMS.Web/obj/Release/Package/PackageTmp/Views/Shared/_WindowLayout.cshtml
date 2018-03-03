@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_EasyUILayout.cshtml";
+}
+<div>
+    <div class="windowbody">
+        @RenderBody()
+    </div>
+    <div class="windowfooter" data-options="fit:true">
+        <a id="btn_cancel" href="javascript:;" class="easyui-linkbutton " data-options="toggle:true,group:'g1',iconCls:'icon-cancel'">取消</a>
+        <a id="btn_ok" href="javascript:;" class="easyui-linkbutton " data-options="toggle:true,group:'g1',iconCls:'icon-ok'">确定</a>
+    </div>
+</div>
+@section styles
+{
+    @RenderSection("styles", required: false)
+}
+@section scripts
+{
+    <script>
+        $('#btn_cancel').on('click', function () {
+            if (window.onCancelClick()) {
+                closeTopWindow('cancel');
+            }
+        });
+        $('#btn_ok').on('click', function () {
+            if (window.onOkClick()) {
+                closeTopWindow('ok');
+            }
+        });
+        window.onOkClick = function () {
+            alert('未实现onOkClick');
+        }
+        window.onCancelClick = function () {
+            return true;
+        }
+
+      
+        
+    </script>
+    @RenderSection("scripts", required: false)
+}

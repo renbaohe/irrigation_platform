@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/handsontable.full.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/themes/default/easyui.css" />
+<script src="~/Scripts/handsontable.full.js"></script>
+<script src="~/Scripts/xlsx.full.min.js"></script>
+<script src="~/Scripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+        overflow: auto;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+    }
+</style>
+<script>
+    const filterVal = {//<=====值转化
+        "pwd": function (value) {
+            return "假装 被加密了"
+        },
+        "sex": function (key) {
+            key = { "男": 0, "女": 1, "": 0, undefined: 0 }[key];
+            return key ? key : 0;
+        }
+    };
+        //---导入头信息 结束--
+</script>
+
+<div style="padding:15px;">
+    <input type="hidden" id="hidDatas" name="hidDatas"/>
+    <div id="hot" style="margin-top:10px;"></div>
+</div>
+@section scripts{
+    <script>
+        var hot;
+        var tmp = [];
+
+       
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("GetItems","DeclareRation")',
+                type: 'GET',
+                success: function (result) {
+                    if (result.Success) {
+                        $("#hot").empty();
+                        showDatas(result.Message);
+                    }
+                }
+            });
+        });
+
+        function showDatas(all_datas) {
+            //----handsontable 初始化 开始------
+            var hotElement = document.querySelector('#hot');//<====绑定handsontable初始化div
+
+            var data = [
+                ["总站", "站别", "渠别", "申报流量m³/s"]
+            ];
+
+            var items = all_datas.split(',');
+            items.forEach(function (value) {
+                var arr = value.split(':');
+                var temp = [arr[0], arr[1], arr[2], ""];
+                data.push(temp);
+            })
+                
+            var settings = {
+                data: data,
+                copyable: true,
+                className: 'htCenter htMiddle',
+                manualColumnResize: true,//当值为true时，允许拖动，当为false时禁止拖动
+                manualRowResize: true,//当值为true时，允许拖动，当为false时禁止拖动
+                //stretchH: "all",     //last:延伸最后一列,all:延伸所有列,none默认不延伸。
+                manualColumnMove: true,// 当值为true时，列可拖拽移动到指定列
+                manualRowMove: true,// 当值为true时，行可拖拽至指定行
+                rowHeaders: false, //当值为true时显示行头，当值为数组时，行头为数组的值
+                colHeaders: false,
+                sortIndicator: true,
+                maxRows:9,
+                contextMenu: true,//显示右键菜单
+                autoColumnSize: true, //当值为true且列宽未设置时，自适应列大小
+                mergeCells: [{ row: 1, col: 0, rowspan: 8, colspan: 1 }, { row: 1, col: 1, rowspan: 3, colspan: 1 }, { row: 4, col: 1, rowspan: 2, colspan: 1 }, { row: 6, col: 1, rowspan: 2, colspan: 1 }],
+                cells: function (row, column) {
+                    var cellMeta = {};
+                    if (row == 0 || column == 0 || column == 1 || column == 2  ) {
+                        cellMeta.readOnly = true;
+                    }
+                    return cellMeta;
+                },
+                //cell: [{ row: 12, col: 11, className: 'htLeft' }],
+                wordWrap: false
+                //,colWidths: [150, 150, 150, 150, 150, 150]
+            }
+            hot = new Handsontable(hotElement, settings);
+            $(".wtHider").css({ margin: "0 auto" })
+        }
+
+        //重写onOkClick方法
+        window.onOkClick = function () {
+            hot.getSourceData().forEach(function (value, index, array) {
+                if (index > 0) {
+                    var t = new Object();
+                    for (var k in value) {
+                        t[k] = filterVal[k] ? filterVal[k](value[k]) : value[k];//<====将xlsx数据转为实际需要的值
+                    }
+                    tmp.push(t);
+                }
+            });
+            $("#hidDatas").val(JSON.stringify(tmp));
+
+            var $form = $(document.forms['form']);
+            if ($form.form('enableValidation').form('validate')) {
+                var res = $.ajax({
+                    type: "POST",
+                    async: false,
+                    dataType: "json",
+                    url: $form.attr('action'),
+                    data: $form.serialize(),
+                    success: function (result) {
+                    },
+                    error: function (data) {
+                        alert("error:" + data.responseText);
+                    }
+                });
+                if (res.responseJSON.Message) {
+                    alert(res.responseJSON.Message)
+                }
+                return res.responseJSON.Success;
+
+            } else {
+                return false;
+            }
+        };
+    </script>
+    }

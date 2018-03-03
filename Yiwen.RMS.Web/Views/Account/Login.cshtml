@@ -1,0 +1,181 @@
+﻿@model Yiwen.RMS.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "宝鸡峡水利项目";
+}
+@section styles
+{
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        body {
+            box-sizing: border-box;
+            text-align: center;
+            background-image: url(/Images/bk.png);
+            background-size: 100% 100%;
+            padding-top: 100px;
+            
+        }
+
+        a, input {
+            outline: none;
+        }
+
+        body h1 {
+           
+            font-family: "微软雅黑";
+            font-style: normal;
+            font-size: 1.8em;
+            color: #fff;
+            text-shadow: -1px -1px 1px #3c5a71;
+        }
+
+        .loginpanel {
+            padding:20px;
+            width: 25vw;
+            min-width:300px;
+            min-height: 23em;
+            background-color: #fff;
+            background-clip:padding-box;
+            border: 1px #7b8693 solid;
+            margin: 50px auto 0;
+            text-align: center;
+            border:8px solid rgba(255,255,255,0.5)
+        }
+
+            .loginpanel img {
+                margin: 2em 0;
+        
+
+            }
+
+
+        .con {
+            width: 43%;
+            height: 20em;
+            background-color: #fff;
+            box-shadow: 8px 8px 8px rgba(37,59,87,0.5);
+            border: 1px #7b8693 solid;
+
+        }
+
+            .con img {
+                margin: 2em 0;
+            }
+
+        .input-one {
+                   font-size:1.2em;
+                   color:#3192e0;
+            width:100% !important;
+             height:2.4em !important;
+            border-radius: 4px 4px 0px 0px;
+           border: none;
+            background: #f5f5f5;
+            margin-bottom:20px;
+            text-indent:2.5em;
+        }
+     
+        .input-two {
+            color:#3192e0;
+                      font-size:1.2em;
+            width:100% !important;
+             height:2.4em !important;
+            border-radius: 0px 0px 4px 4px;
+            border: none;
+             text-indent:2.5em;
+            background:#f5f5f5;
+            
+        }
+         .input-one:focus +i{
+              background-image: url(/Images/locked.png);
+         }
+        .icon-userIcon{
+            top:0;
+            left:0;
+            position:absolute;
+            width:24px;
+            height:24px;
+             background-image: url(/Images/lock-def.png);
+             background-repeat:no-repeat;
+             background-size:contain;
+             margin-top:0.7em;
+             margin-left:1em;
+            display:inline-block;
+        }
+        .icon-psdIcon{
+                 top:0;
+            left:0;
+            position:absolute;
+            width:24px;
+            height:24px;
+             background-image: url(/Images/man.png);
+             background-repeat:no-repeat;
+             background-size:contain;
+             margin-top:0.7em;
+             margin-left:1em;
+            display:inline-block;
+        }
+         .input-two:focus +i{
+              background-image: url(/Images/maned.png);
+         }
+        .con_input{
+            position:relative;
+        }
+        .submit-btn {
+            padding: 15px 0;
+            width: 100% !important;
+            background-color: #008f3f;
+            border-radius: 4px;
+            color: #fff;
+            border: none;
+            font-size: 1.2em;
+            margin: 2em 0 2em 0;
+        }
+         input:-webkit-autofill {
+            -webkit-box-shadow:0 0 0 100px #f5f5f5 inset; 
+            -webkit-text-fill-color: #666;
+        }
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow:0 0 0 100px #f5f5f5 inset;
+            -webkit-text-fill-color: #666;
+        }
+    </style>
+}
+
+
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+        
+    <div class="loginpanel">
+        <img src="/images/logo.png" style="width:150px;">
+        <div class="con_panel">
+            <div class="con_input">
+                <input type="text" name="UserName" placeholder="用户名" class="input-one" />
+                <i class="icon-userIcon"></i>
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="con_input con_input_password">
+                <input type="password" name="Password" placeholder="密码" class="input-two" />
+                <i class="icon-psdIcon"></i>
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="con_select">
+                <input type="submit" value="登    录" class="submit-btn" />
+                @*<input type="checkbox" name="RememberMe" value="记住我" />记住我*@
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

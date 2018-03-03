@@ -1,0 +1,263 @@
+﻿@model Yiwen.RMS.Web.Controllers.EasyUIIndexViewInfo
+@{
+    ViewBag.Title = "_DatagridIndex";
+
+    Layout = "~/Views/Shared/_EasyUILayout.cshtml";
+}
+<div class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden">
+    @if (this.Model.ShowSearch)
+    {
+        <div class="searchpanel" data-options="region:'north',split:true,border:false">
+            <form id="_sf" name="search">
+                @RenderSection("search", false)
+                <div class="searchitem">
+                    <input type="submit" value="搜索" />
+                    <input type="reset" value="重置" />
+                    <input type="hidden" id="hdIsInit" value="true" />
+                </div>
+            </form>
+        </div>
+    }
+    <div data-options="region:'center',border:false">
+        <table id="_tb" class="easyui-datagrid"
+               title='@string.Format("{0}列表", this.Model.DataTitle)' ,
+               data-options="rownumbers:true,
+               autoRowHeight:true,
+            singleSelect:true,
+            iconCls: 'icon-smartart',
+            pageSize:15,
+            pageList:[15,50,100],
+            url:'@Url.Action(this.Model.ListItemsActionName)',
+            idField:'@this.Model.IDField',
+            method:'post',
+            pagination:true,
+            striped:true,
+            fit:true,
+            rowStyler:function(index,row){
+                if(functions.rowStyler){
+                    return functions.rowStyler(index,row);
+                }
+            },
+            fitColumns:true,
+            toolbar:toolbar">
+            <thead>
+                @RenderBody()
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.condition.js")"></script>
+    <script>
+        window.toolbar = [{
+            text: '新增',
+            id:"add",
+            handler: function () { functions.add(); }
+        }, '-', {
+            text: '编辑',
+            id:"edit",
+            handler: function () { functions.edit(); }
+        }, '-', {
+            text: '删除',
+            id:"del",
+            handler: function () { functions.delete(); }
+        }, '-', {
+            text: '刷新',
+            id:"reload",
+            handler: function () { functions.refresh(); }
+        }];
+        //json 日期格式乱码
+        function formatdate(value, row, index) {
+            if (value != null) {
+                var date = new Date(parseInt(value.replace("/Date(", "").replace(")/", ""), 10));
+                //月份为0-11，所以+1，月份小于10时补个0
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                //var milliseconds = date.getMilliseconds();
+                return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+            }
+            return "";
+        }
+
+        //json 日期格式乱码
+        function formatshortdate(value, row, index) {
+            if (value != null) {
+                var date = new Date(parseInt(value.replace("/Date(", "").replace(")/", ""), 10));
+                //月份为0-11，所以+1，月份小于10时补个0
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                //var milliseconds = date.getMilliseconds();
+                return date.getFullYear() + "-" + month + "-" + day;
+            }
+            return "";
+        }
+
+        //json 日期格式乱码
+        function formatshortdate2(value, row, index) {
+            if (value != null) {
+                var date = new Date(parseInt(value.replace("/Date(", "").replace(")/", ""), 10));
+                //月份为0-11，所以+1，月份小于10时补个0
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                //var milliseconds = date.getMilliseconds();
+                return date.getFullYear() + "-" + month;
+            }
+            return "";
+        }
+
+        var functions = {
+            add: function () {
+                var self=this;
+                openTopWindow('@Url.Action(this.Model.AddItemActionName)',
+                    {
+                        title:'@string.Format("添加{0}", this.Model.DataTitle)',
+                        width: '@this.Model.AddWindowSize.Width' ,
+                        height:'@this.Model.AddWindowSize.Height' ,
+                        callback:function(res){
+                            if(res=='ok'){
+                                self.refresh();
+                            }
+                        }
+                    });
+            },
+            edit: function () {
+                var row=this.getSelected();
+                if (!row) {
+                    $.messager.alert({
+                        title: '操作提示',
+                        msg: '请先选择要编辑的项！',
+                        icon: 'warning',
+                    });
+                    return;
+                }
+                var self=this;
+                var currentid=@string.Format("row.{0}", this.Model.IDField);
+                openTopWindow('@Url.Action(this.Model.EditItemActionName)'+'?id='+currentid,
+                    {
+                        title:'@string.Format("编辑{0}", this.Model.DataTitle)',
+                        width: '@this.Model.EditWindowSize.Width' ,
+                        height:'@this.Model.EditWindowSize.Height' ,
+                        callback:function(res){
+                            if(res=='ok'){
+                                self.refresh();
+                            }
+                        }
+                    });
+            },
+             detail: function () {
+                var row=this.getSelected();
+                if(!row) return;
+                var self=this;
+                var currentid=@string.Format("row.{0}", this.Model.IDField);
+                openTopWindow('@Url.Action(this.Model.DeleteItemActionName)'+'?id='+currentid,
+                    {
+                        title:'@string.Format("详情{0}", this.Model.DataTitle)',
+                        width: '@this.Model.EditWindowSize.Width' ,
+                        height:'@this.Model.EditWindowSize.Height' ,
+                        callback:function(res){
+                            if(res=='ok'){
+                                self.refresh();
+                            }
+                        }
+                    });
+            },
+            editpwd:function(){
+                var row=this.getSelected();
+                if(!row) return;
+                var self=this;
+                var currentid=@string.Format("row.{0}", this.Model.IDField);
+                openTopWindow('@Url.Action("EditPwd","User")'+'?UserId='+currentid,
+                    {
+                        title:'@string.Format("修改{0}", this.Model.DataTitle)',
+                        width: '300' ,
+                        height:'400' ,
+                        callback:function(res){
+                            if(res=='ok'){
+                                self.refresh();
+                            }
+                        }
+                    });
+            },
+            find: function () {
+                alert('find');
+            },
+            'delete': function () {
+                var self=this;
+                var row = this.getSelected();
+                if (!row) {
+                    $.messager.alert({
+                        title: '操作提示',
+                        msg: '请先选择要删除的项！',
+                        icon: 'warning',
+                    });
+                    return;
+                }
+                $.messager.confirm('确认删除', '确定要删除选择的记录吗？', function (res){
+                    if(!res) return;
+                    $.ajax({
+                        url: '@Url.Action(this.Model.DeleteItemActionName)',
+                        data: { id: @string.Format("row.{0}", this.Model.IDField) },
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.Success) {
+                                self.refresh();
+                            } else {
+                                $.messager.alert(result.Message);
+                            }
+                        }
+                    });
+                });
+
+            },
+            refresh: function () {
+                $('#_tb').datagrid('reload')
+            },
+            getSelected: function () {
+                return $('#_tb').datagrid('getSelected');
+            },
+            search:function(condition){
+                var options = $('#_tb').datagrid('options');
+                options.queryParams = {
+                    condition: condition? JSON.stringify($('#_sf').createSearch()):null
+                };
+                options.pageNumber = 1;
+                var pager = $('#_tb').datagrid('getPager');
+                pager.pagination('refresh', {
+                    pageNumber: 1
+                });
+                $('#_tb').datagrid('reload')
+            },
+            init: function () {
+                var self = this;
+                //var isInit = $("#hdIsInit").val();
+                //if (isInit == "true") {
+                    $('#_sf').on('submit', function () {
+                        self.search(true);
+                        return false;
+                    }).on('reset', function () {
+                        self.search(false);
+                    });
+                //}
+                //else
+                //{
+                //    self.search(true);
+                //}
+            }
+        };
+        $(function(){functions.init();});
+    </script>
+    @RenderSection("scripts", required: false)
+}
+

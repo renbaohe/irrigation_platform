@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "_FormLayout";
+    Layout = "~/Views/Shared/_WindowLayout.cshtml";
+}
+<form name="form" class="easyui-form" method="post" data-options="novalidate:true">
+    @RenderBody()
+</form>
+@section styles
+{
+    @RenderSection("styles", required: false)
+}
+@section scripts
+{
+
+    <script>
+        window.onOkClick = function () {
+            var $form = $(document.forms['form']);
+            if ($form.form('enableValidation').form('validate')) {
+                var res = $.ajax({
+                    type: "POST",
+                    async: false,
+                    dataType: "json",
+                    url: $form.attr('action'),
+                    data: $form.serialize(),
+                    success: function (result) {
+                    },
+                    error: function (data) {
+                        alert("error:" + data.responseText);
+                    }
+                });
+                if (res.responseJSON.Message) {
+                    alert(res.responseJSON.Message)
+                }
+                return res.responseJSON.Success;
+
+            } else {
+                return false;
+            }
+        }
+
+    </script>
+    @RenderSection("scripts", required: false)
+}

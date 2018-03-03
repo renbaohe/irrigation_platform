@@ -1,0 +1,80 @@
+﻿@model Yiwen.RMS.Web.Controllers.EasyUIIndexViewInfo
+@{
+    ViewBag.Title = "申报配给";
+    Layout = "~/Views/Shared/_DatagridIndex.cshtml";
+}
+
+<tr>
+    <th data-options="field:'create_at',width:300, formatter:formatdate">水量申报记录</th>   
+    <th data-options="field:'create_username',width:100">申报人</th> 
+    <th data-options="field:'ration_at',width:120, formatter:formatdate">配给时间</th>
+    <th data-options="field:'report_at',width:120, formatter:formatdate">上报时间</th>
+    <th data-options="field:'status',width:100, formatter:formatstatus">状态</th>
+    <th data-options="field:'id',width:100,formatter:formatOptions">操作</th>
+</tr>
+
+@section scripts{
+    <script>
+        if ('@ViewBag.Role' == 1 && '@ViewBag.HasDatas'=='False') {
+            window.toolbar = [{
+                text: '用水申报',
+                id: "add",
+                handler: function () { functions.add(); }
+            }, '-', {
+                text: '刷新',
+                id: "reload",
+                handler: function () { functions.refresh(); }
+            }];
+        }
+        else {
+            window.toolbar = [{
+                text: '刷新',
+                id: "reload",
+                handler: function () { functions.refresh(); }
+            }];
+        }
+        functions.edit = function (currentid) {
+            var self=this;
+            openTopWindow('@Url.Action(this.Model.EditItemActionName)'+'?id='+currentid,
+                {
+                    title:'@string.Format("编辑{0}", this.Model.DataTitle)',
+                    width: '@this.Model.EditWindowSize.Width' ,
+                    height:'@this.Model.EditWindowSize.Height' ,
+                    callback:function(res){
+                        if(res=='ok'){
+                            self.refresh();
+                        }
+                    }
+                });
+        }
+        @Html.Partial("_EasyUIEnumFormat", typeof(Yiwen.RMS.Data.RoleEnum))
+        function formatOptions(value, row, index) {
+            var id = row.id;
+            var htmlStr = "";
+            if (row.status == 0) {
+                if ('@ViewBag.Role'==1) {
+                    htmlStr = "<input type='button' class='my-btn'  value='编辑' onclick='functions.edit(" + value +")' style='width:100px;'/>";
+                }
+                else {
+                    htmlStr = "<input type='button' class='my-btn'  value='配给' onclick='functions.edit(" + value +")' style='width:100px;'/>";
+                }
+            }
+            else if (row.status == 1) {
+                if (@ViewBag.Role==1) {
+                    htmlStr = "<input type='button' class='my-btn'  value='水情上报' onclick='functions.edit(" + value + ")' style='width:100px;' />";
+                }
+                else {
+                    htmlStr = "<input type='button' class='my-btn'  value='查看详情' onclick='functions.edit(" + value + ")' style='width:100px;'/>";
+                }
+            }
+            else if (row.status ==2) {
+                htmlStr = "<input type='button' class='my-btn'  value='查看详情' onclick='functions.edit(" + value + ")' style='width:100px;'/>";
+            }
+            return htmlStr;
+        }
+
+        function formatstatus(value, row, index) {
+            return value == 0 ? "待配给" : value == 1 ? "待上报" : "已完成";
+        }
+    </script>
+    }

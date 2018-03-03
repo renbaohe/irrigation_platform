@@ -1,0 +1,52 @@
+﻿@using Yiwen.RMS.Data;
+@model Yiwen.RMS.Data.users
+<style type="text/css">
+    ul {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+    }
+
+        ul li {
+            padding: 2px 0;
+            color: #505050;
+        }
+
+            ul li a {
+                color: #505050;
+                text-decoration: none;
+            }
+</style>
+<ul>
+    @if (this.Model.role == 1)
+    {
+        <li>
+            <i class="icon iconfont icon-at8"></i><a href="@Url.Action("Index", "WaterRegime")">8时水情</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-declare"></i><a href="@Url.Action("Index", "DeclareRation")">申报配给</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-log"></i><a href="@Url.Action("Index", "WaterLog")">行水日志</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-reservior"></i><a href="@Url.Action("Index", "ReservoirWaterSituation")">水库水情</a>
+        </li>
+
+
+    }
+    else
+    {
+        <li>
+            <i class="icon iconfont icon-declare"></i><a href="@Url.Action("Index", "DeclareRation")">申报配给</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-clan"></i><a href="@Url.Action("Index", "User")">用户管理</a>
+        </li>
+    }
+</ul>
+<script>
+    $('#fun_list>ul>li>a').click(function () {
+        $(this).parent('li').addClass('active').siblings().removeClass('active')
+    })
+</script>

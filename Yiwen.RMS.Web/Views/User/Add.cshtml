@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+<div style="padding:15px;">
+    <table cellpadding="5">
+        <tr>
+            <td>角　色:</td>
+            <td>
+                <input id="ddl_role" name="ddl_role" class="easyui-combobox" editable="false" />
+                <input type="hidden" id="role" name="role" />
+            </td>
+        </tr>
+        <tr>
+            <td>账　号:</td>
+            <td>
+                <input id="uname" name="uname" class="easyui-textbox" data-options="required:true,novalidate:true" missingmessage="账号为必填项" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>密　码:</td>
+            <td>
+                <input id="password" name="password" class="easyui-textbox" data-options="required:true,novalidate:true" missingmessage="密码为必填项" type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td>重复密码:</td>
+            <td>
+                <input id="re_password" name="re_password" class="easyui-textbox" data-options="required:true,novalidate:true" missingmessage="密码为必填项" type="password" />
+            </td>
+        </tr>
+        @*<tr>
+            <td>手机号:</td>
+            <td>
+                <input id="mobile" name="mobile" class="easyui-textbox" invalidmessage="手机号格式错误" data-options="required:true,validType:'length[11,11]',novalidate:true" missingmessage="手机号为必填项" type="tel" />
+            </td>
+        </tr>*@
+    </table>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/jquery-combox.js"></script>
+
+    <script>
+        $(function () {
+            InitCombox("ddl_role", "/User/GetRoleEnum", "id", "name");
+        })
+        $("#ddl_role").combobox({
+            onChange: function (n, o) {
+                $("#role").val($(this).combobox("getValue"));
+            }
+        });
+
+        window.onOkClick = function () {
+            var $form = $(document.forms['form']);
+            if ($form.form('enableValidation').form('validate')) {
+                var res = $.ajax({
+                    type: "POST",
+                    async: false,
+                    dataType: "json",
+                    url: $form.attr('action'),
+                    data: $form.serialize(),
+                    success: function (result) {
+                        $.messager.alert({
+                            title: '操作提示',
+                            msg: '用户添加成功！',
+                            icon: 'info',
+                        });
+                    },
+                    error: function (data) {
+                        alert("error:" + data.responseText);
+                    }
+                });
+
+                return res.responseJSON.Success;
+
+            } else {
+                return false;
+            }
+        }
+    </script>
+}

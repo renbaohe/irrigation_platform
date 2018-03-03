@@ -1,0 +1,29 @@
+﻿@using System
+
+@model System.Type
+     
+function @string.Format("format{0}",this.Model.Name) (value, row, index)
+    {
+        switch (value)
+        {
+            @foreach (var item in Enum.GetValues(this.Model))
+            {
+                @Html.Raw(string.Format("case {0}: return '{1}';", (int)item, ((Enum)item).GetDisplayText()));
+            } 
+
+            default: return '未知';
+        }
+    }
+
+function @string.Format("formatstr_{0}",this.Model.Name) (value, row, index)
+    {
+        switch (value)
+        {
+            @foreach (var item in Enum.GetValues(this.Model))
+            {
+                @Html.Raw(string.Format("case '{0}': return '{1}';", item.ToString(), ((Enum)item).GetDisplayText()));
+            } 
+
+            default: return '未知';
+        }
+    }

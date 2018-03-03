@@ -1,0 +1,15 @@
+C:\Project\clan_platform\Yiwen.RMS.Core\bin\Release\Yiwen.RMS.Core.dll
+C:\Project\clan_platform\Yiwen.RMS.Core\bin\Release\Yiwen.RMS.Core.pdb
+C:\Project\clan_platform\Yiwen.RMS.Core\bin\Release\YS.System.Base.dll
+C:\Project\clan_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.csprojResolveAssemblyReference.cache
+C:\Project\clan_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.csproj.CoreCompileInputs.cache
+C:\Project\clan_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.dll
+C:\Project\clan_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.pdb
+C:\Project\irrigation_platform\Yiwen.RMS.Core\bin\Release\Yiwen.RMS.Core.dll
+C:\Project\irrigation_platform\Yiwen.RMS.Core\bin\Release\Yiwen.RMS.Core.pdb
+C:\Project\irrigation_platform\Yiwen.RMS.Core\bin\Release\YS.System.Base.dll
+C:\Project\irrigation_platform\Yiwen.RMS.Core\bin\Release\YS.System.Base.pdb
+C:\Project\irrigation_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.csprojResolveAssemblyReference.cache
+C:\Project\irrigation_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.csproj.CoreCompileInputs.cache
+C:\Project\irrigation_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.dll
+C:\Project\irrigation_platform\Yiwen.RMS.Core\obj\Release\Yiwen.RMS.Core.pdb

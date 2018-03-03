@@ -1,0 +1,48 @@
+﻿@model Yiwen.RMS.Data.users
+<style type="text/css">
+    #logoutForm {
+        display: inline-block;
+    }
+</style>   
+<script src="~/Scripts/jquery-1.11.3.min.js"></script>
+<div style="height:100%;line-height:65px;height:65px;text-indent:20px; background: #008f3f;color:white;overflow:hidden">
+    <div style="font-size:20px;float:left;margin-left:15px;">宝鸡峡水利项目</div>
+    @if (Request.IsAuthenticated)
+    {
+        <div style="font-size:14px;float:right;margin-right: 30px; height:65px;line-height:65px;">
+            <span style="margin-right:20px;">你好，@this.Model.uname!</span>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                @Html.AntiForgeryToken()
+                <a id="logout" href="#" style="text-decoration:none;" title="注销账号"><i class="icon iconfont icon-exit" style="color:white;font-size:24px;"></i></a>
+            }
+             <a href="javascript:ChangePwd(@this.Model.id)" title="修改密码" style="text-decoration:none;"><i class="icon iconfont icon-modify" style="color:white;font-size:24px;margin-right:10px;"></i></a>
+        </div>
+    }
+</div>
+<script>
+    function ChangePwd(id) {
+        openTopWindow('/User/ChangePwd' + '?id=' + id,
+            {
+                title: '修改密码',
+                width: '450',
+                height: '300',
+                callback: function (res) {
+                    if (res == 'ok') {
+
+                    }
+                }
+            });
+    }
+    $(function () {
+        $("#logout").on("click", function () {
+            $.messager.confirm("操作提示", "您确定要注销吗？", function (re) {
+                if (re) {
+                    document.getElementById('logoutForm').submit()
+                }
+            }); 
+        });
+
+        
+    })
+</script>

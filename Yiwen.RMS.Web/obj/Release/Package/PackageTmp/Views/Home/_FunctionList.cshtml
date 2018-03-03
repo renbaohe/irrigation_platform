@@ -1,0 +1,89 @@
+﻿@using Yiwen.RMS.Data;
+@model Yiwen.RMS.Data.users
+<style type="text/css">
+    ul {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+    }
+
+        ul li {
+            padding: 2px 0;
+            color: #505050;
+        }
+
+            ul li a {
+                color: #505050;
+                text-decoration: none;
+            }
+</style>
+<ul>
+    @if (this.Model.role == 1)
+    {
+        <li>
+            <i class="icon iconfont icon-genealogy"></i><a href="@Url.Action("Index", "WaterRegime")">8时水情</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-clan"></i><a href="@Url.Action("Index", "User")">用户管理</a>
+        </li>
+        @*<li>
+            <i class="icon iconfont icon-company"></i><a href="@Url.Action("Index", "Company")">宗族商贸</a>
+            <span>+</span>
+            <ul>
+                <li><a href="@Url.Action("Index", "Company")">宗族企业</a></li>
+                <li><a href="@Url.Action("Index", "CompanyClaim")">企业认领管理</a></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-culture"></i><a href="@Url.Action("Index", "Culture")">文化管理</a>
+            <span>+</span>
+            <ul>
+                <li><a href="@Url.Action("Index", "Celebrity")">宗族名人</a></li>
+                <li><a href="@Url.Action("Index", "Culture")">宗族文化</a></li>
+                <li><a href="@Url.Action("Index", "Active")">宗族活动</a></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-star"></i><a href="@Url.Action("Index", "Star")">宗族明星</a>
+            <span>+</span>
+            <ul>
+                <li><a href="@Url.Action("Index", "Star")">明星管理</a></li>
+                <li><a href="@Url.Action("Index", "StarActive")">明星活动</a></li>
+            </ul>
+        </li>*@
+    }
+    @*else
+    {
+        <li>
+            <i class="icon iconfont icon-active"></i><a href="@Url.Action("Index", "Active")">宗族活动</a>
+        </li>
+    }
+    <li>
+        <i class="icon iconfont icon-donation"></i><a href="@Url.Action("Index", "Donation")">募捐管理</a>
+    </li>
+    @if (this.Model.role == 1)
+    {
+        <li>
+            <i class="icon iconfont icon-branch"></i><a href="@Url.Action("Index", "Branch")">分会管理</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-feedback"></i><a href="@Url.Action("Index", "Feedback")">反馈建议</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-dic"></i><a href="@Url.Action("Index", "Dictionary")">系统字典</a>
+        </li>
+        <li>
+            <i class="icon iconfont icon-message"></i><a href="@Url.Action("Index", "Message")">系统消息</a>
+            <span>+</span>
+            <ul>
+                <li><a href="@Url.Action("Index", "Message")">系统消息</a></li>
+                <li><a href="@Url.Action("Index", "MessageTemplate")">消息模板</a></li>
+            </ul>
+        </li>
+    }*@
+</ul>
+<script>
+    $('#fun_list>ul>li>a').click(function () {
+        $(this).parent('li').addClass('active').siblings().removeClass('active')
+    })
+</script>

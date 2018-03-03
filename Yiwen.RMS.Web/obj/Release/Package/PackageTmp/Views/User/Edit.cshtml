@@ -1,0 +1,52 @@
+﻿@model Yiwen.RMS.Data.users
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+<input type="hidden" name="id" value="@this.Model.id" />
+<div style="padding:15px;">
+    <table cellpadding="5">
+        <tr>
+            <td>角　色:</td>
+            <td>
+                <input id="role" name="role" class="easyui-combobox" editable="false" value="@Model.role"/>
+                <input type="hidden" id="role" name="role" value="@Model.role"/>
+            </td>
+        </tr>
+        <tr>
+            <td>账　号:</td>
+            <td>
+                <input id="uname" name="uname" class="easyui-textbox"  data-options="required:true,novalidate:true" missingmessage="账号为必填项" type="text" value="@Model.uname" />
+            </td>
+        </tr>
+        <tr>
+            <td>密　码:</td>
+            <td>
+                <input id="password" name="password" class="easyui-textbox" data-options="required:true,novalidate:true" missingmessage="密码为必填项" type="password" value="@Model.password"/>
+            </td>
+        </tr>
+        <tr>
+            <td>重复密码:</td>
+            <td>
+                <input id="re_password" name="re_password" class="easyui-textbox" data-options="required:true,novalidate:true" missingmessage="密码为必填项" type="password" value="@Model.password"/>
+            </td>
+        </tr>
+        @*<tr>
+            <td>手机号:</td>
+            <td>
+                <input id="mobile" name="mobile" class="easyui-textbox" invalidmessage="手机号格式错误" data-options="required:true,novalidate:true" missingmessage="手机号为必填项" type="tel" value="@Model.mobile" />
+            </td>
+        </tr>*@
+    </table>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-combox.js"></script>
+
+    <script>
+            $(function () {
+                InitCombox("role", "/User/GetRoleEnum", "id", "name");
+            })
+    </script>
+}

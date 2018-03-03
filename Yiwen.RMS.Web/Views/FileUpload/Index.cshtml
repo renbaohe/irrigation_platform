@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Script/jquery-1.8.2.min.js"></script>
+    <link href="~/CSS/webuploader.css" rel="stylesheet" />
+    <script src="~/Script/webuploader.js"></script>
+    <link href="~/CSS/style.css" rel="stylesheet" />
+    <link href="~/CSS/font-awesome.css" rel="stylesheet" />
+    <script src="~/Script/upload.js"></script>
+</head>
+<body>
+    <table class="tc_table_cp" border="0">
+        <tr>
+            <td width="104">图片上传：</td>
+            <td colspan="3">
+                <div id="fileList">
+
+                </div>
+                <div class="cp_img_jia" id="filePicker"></div>
+            </td>
+        </tr>
+        <tr>
+            <td width="104"></td>
+            <td colspan="3">
+                <button id="ctlBtn" class="btn btn-default">开始上传</button>
+            </td>
+        </tr>
+    </table>
+    <button id="btn" class="btn btn-default">提交</button>
+
+</body>
+</html>
+<script type="text/javascript">
+    var arr= new Array();
+    var fileType = "Culture";
+    var multiple = false;
+    $(function () {
+        $("#btn").on("click", function () { 
+            $("#ctlBtn").click();
+            setTimeout(function () { 
+            arr.forEach(function (item) {
+                alert(item);
+                });
+            },500)
+        })
+    })
+</script>
+

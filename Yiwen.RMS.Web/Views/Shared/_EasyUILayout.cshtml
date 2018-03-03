@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles
+{
+    @Styles.Render("~/Content/thremes/default/easyui")
+    @Styles.Render("~/Content/css")
+
+
+    @RenderSection("styles", required: false)
+}
+@RenderBody()
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    <script src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/easyui-lang-zh_CN.js")"></script>
+    <script src="@Url.Content("~/Scripts/echarts-all.js")"></script>
+
+    
+
+    <script>
+        $(function () {
+            $('a[data-modal="true"]').on('click', function () {
+                var $a = $(this);
+                openTopWindow($a.attr('href'), $a.data('modaltitle') || $a.text(), $a.data('modalwidth'), $a.data('modalheight'));
+                return false;
+            });
+        });
+        function openTopWindow(url, options) {
+           
+            var default_options = {
+                title: '标题',
+                width: 600,
+                height: 400,
+                callback: function (res) { console.log(res); }
+            };
+            var op = $.extend(default_options, options);
+
+            var randomname = 'topwin_' + Math.floor(Math.random() * 10000000);
+            if (url != undefined) {
+                var content = '<iframe name="{name}" scrolling="auto" frameborder="0" src="{src}" style="width:100%;height:100%;"></iframe>'.replace('{src}', url).replace('{name}', randomname);
+                var $wrap = window.top.$('<div/>').css('overflow', 'hidden').attr('rname', randomname).appendTo(window.top.document.body);
+                var win = $wrap.window({
+                    title: op.title,
+                    width: op.width,
+                    height: op.height,
+                    content: content,
+                    modal: true,
+                    animate: true,
+                    minimizable: false,
+                    onClose: function (e) {
+                        if (op.callback) {
+                            op.callback($wrap.data('dialogresult'));
+                        }
+                        $wrap.window('destroy');//释放资源
+                    }
+                });
+            }
+        }
+        function closeTopWindow(res) {
+            window.top.$('body div[rname="{name}"]'.replace('{name}', window.name)).data('dialogresult', res).window('close');
+        }
+
+    </script>
+    @RenderSection("scripts", required: false)
+}

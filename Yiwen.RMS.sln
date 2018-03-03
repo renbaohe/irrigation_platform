@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yiwen.RMS.Web", "Yiwen.RMS.Web\Yiwen.RMS.Web.csproj", "{DAF55E73-B02B-4C42-9C01-866F03EF9C86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yiwen.RMS.Bll", "Yiwen.RMS.Bll\Yiwen.RMS.Bll.csproj", "{BF562C96-6FFD-4B6F-A788-A1490C55309A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yiwen.RMS.Data", "Yiwen.RMS.Data\Yiwen.RMS.Data.csproj", "{41C346FC-A35F-4BE7-AC6D-30455EB186E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yiwen.RMS.Core", "Yiwen.RMS.Core\Yiwen.RMS.Core.csproj", "{2078CD7C-41D2-4CD7-851A-CF414669036B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAF55E73-B02B-4C42-9C01-866F03EF9C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF55E73-B02B-4C42-9C01-866F03EF9C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF55E73-B02B-4C42-9C01-866F03EF9C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF55E73-B02B-4C42-9C01-866F03EF9C86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF562C96-6FFD-4B6F-A788-A1490C55309A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF562C96-6FFD-4B6F-A788-A1490C55309A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF562C96-6FFD-4B6F-A788-A1490C55309A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF562C96-6FFD-4B6F-A788-A1490C55309A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41C346FC-A35F-4BE7-AC6D-30455EB186E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41C346FC-A35F-4BE7-AC6D-30455EB186E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C346FC-A35F-4BE7-AC6D-30455EB186E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41C346FC-A35F-4BE7-AC6D-30455EB186E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2078CD7C-41D2-4CD7-851A-CF414669036B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2078CD7C-41D2-4CD7-851A-CF414669036B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2078CD7C-41D2-4CD7-851A-CF414669036B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2078CD7C-41D2-4CD7-851A-CF414669036B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

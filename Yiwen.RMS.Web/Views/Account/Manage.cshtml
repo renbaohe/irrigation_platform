@@ -1,0 +1,14 @@
+﻿@model Yiwen.RMS.Web.Models.LocalPasswordModel
+@{
+    ViewBag.Title = "管理帐户";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<p>你已使用以下身份登录: <strong>@User.Identity.Name</strong>.</p>
+
+    @Html.Partial("_ChangePasswordPartial")

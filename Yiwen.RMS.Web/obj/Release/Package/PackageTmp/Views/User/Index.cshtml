@@ -1,0 +1,19 @@
+﻿@model Yiwen.RMS.Web.Controllers.EasyUIIndexViewInfo
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_DatagridIndex.cshtml";
+}
+
+<tr>
+    <th data-options="field:'ck',checkbox:true"></th>
+    <th data-options="field:'uname',width:150">登录账号</th>
+    <th data-options="field:'role',width:150, formatter:formatRoleEnum">角色</th>
+    @*<th data-options="field:'mobile',width:150">手机号</th>*@
+    <th data-options="field:'create_at',width:300,editor:'date', formatter:formatdate">创建时间</th>
+</tr>
+
+@section scripts{
+    <script>
+        @Html.Partial("_EasyUIEnumFormat", typeof(Yiwen.RMS.Data.RoleEnum))
+    </script>
+    }
